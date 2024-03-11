@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 class Memo(BaseModel):
-    id:str
+    id:int
     content:str
 
 memos = []
