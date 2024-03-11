@@ -3,7 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 class Memo(BaseModel):
-    id:int
+    id:str
     content:str
 
 memos = []
@@ -18,5 +18,22 @@ def create_memo(memo:Memo):
 @app.get("/memos")
 def read_memo():
     return memos
+
+@app.put("/memos/{memo_id}")
+def put_memo(req_memo:Memo):
+    for memo in memos:
+        if memo.id==req_memo.id:
+            memo.content=req_memo.content
+            return '성공했습니다.'
+    return '그런 메모는 없습니다.'
+ 
+@app.delete("/memos/{memo_id}")
+def delete_memo(memo_id):
+    for index, memo in enumerate(memos): # enumerate : 코테에 자주나옴 배열에 index와 값을 같이 뽑아주는 함수
+        print(memo.id == memo_id)
+        if memo.id==memo.id:
+            memos.pop(index)
+            return '성공했습니다.'
+    return '그런 메모는 없습니다.'
 
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
